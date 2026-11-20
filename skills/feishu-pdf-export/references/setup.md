@@ -15,7 +15,7 @@ uv pip install --python "$exporter_dir/venv/bin/python" \
 feishu-docx export --help
 ```
 
-Confirm that the help includes `--pdf` and `--debug`. For custom styling, check for `--pdf-template`, `--pdf-logo`, and `--syntax-style` as needed. Install Poppler with your package manager if `pdfinfo`, `pdftotext`, or `pdftoppm` is missing.
+Confirm that the help includes `--pdf`, `--debug`, `--pdf-template`, and `--pdf-logo`. Install Poppler with your package manager if `pdfinfo`, `pdftotext`, or `pdftoppm` is missing.
 
 On macOS, if WeasyPrint fails to load a library such as `libgobject-2.0-0`, install the Homebrew libraries and retry in the same shell.
 

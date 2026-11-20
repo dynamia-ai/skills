@@ -11,17 +11,19 @@ Get the document or wiki URL and confirm that the configured Feishu identity has
 
 ## Export
 
-Use a fresh directory for each document. Set `doc_url` to the source URL before running the export.
+Use the bundled [Dynamia stylesheet](assets/dynamia.css) and [cover logo](assets/dynamia-logo.svg) by default. Set `doc_url` to the source URL and `skill_dir` to the absolute path of the directory containing this `SKILL.md`. Use a fresh output directory for each document.
 
 ```sh
 output_dir="$(mktemp -d "${TMPDIR:-/tmp}/feishu-pdf.XXXXXX")"
-feishu-docx export "$doc_url" -o "$output_dir" -n source --pdf --debug
+feishu-docx export "$doc_url" -o "$output_dir" -n source --pdf --debug \
+  --pdf-template "$skill_dir/assets/dynamia.css" \
+  --pdf-logo "$skill_dir/assets/dynamia-logo.svg"
 find "$output_dir" -type f -name '*.pdf' -print
 ```
 
 Allow the export to finish before checking its output. Require a successful exit and exactly one PDF in the output directory. If there are zero or multiple PDFs, inspect the export logs and output before continuing. Keep the Markdown and the debug HTML next to the PDF for comparison.
 
-For custom styling, add `--pdf-template /path/to/template.css`. For the [Dynamia template](assets/dynamia.css), resolve that path from the installed skill directory. Add `--pdf-logo /path/to/logo.svg` only if a local logo is available, or use `--syntax-style solarized-light` to change code highlighting. The Dynamia template uses A4 pages. Inspect wide tables, long identifiers, and dense screenshots at reading size.
+Use different assets or omit branding if the user asks. To change code highlighting, pass `--syntax-style` with a theme such as `solarized-light`. The Dynamia template uses A4 pages. Inspect wide tables, long identifiers, and dense screenshots at reading size.
 
 ## Check the PDF
 
@@ -40,7 +42,7 @@ grep -nF -e '<br>' -e '&lt;br&gt;' -e '**' "$output_dir/pdf.txt"
 
 For the marker scan, `grep` exits with code 1 when it finds no matches. Review each match against the Markdown, HTML, and rendered page. A code example may intentionally show one of these markers. Also compare important commands, version strings, tables, and continued list numbering with the source. Check names and mentions against the Feishu document if the exporter reported access errors resolving them.
 
-Render every page and inspect it at a readable size.
+Render every page and inspect it at a readable size. For a branded export, confirm that the expected logo appears on the cover.
 
 ```sh
 mkdir -p "$output_dir/previews"
