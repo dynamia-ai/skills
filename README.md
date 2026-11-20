@@ -31,3 +31,7 @@ npx skills add dynamia-ai/skills --skill '*'
 | [feishu-pdf-export](skills/feishu-pdf-export/SKILL.md) | Export a Feishu document or wiki page to a local PDF, compare extracted text with the source, and inspect every rendered page. Includes an optional Dynamia PDF template. |
 
 Each skill lives in `skills/<name>/` and starts at `SKILL.md`. The Feishu skill also requires the exporter, Poppler, and access to the source document. See [exporter setup](skills/feishu-pdf-export/references/setup.md).
+
+## License
+
+This project is licensed under the [Apache License 2.0](LICENSE).

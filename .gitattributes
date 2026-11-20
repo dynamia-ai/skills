@@ -1,0 +1,2 @@
+skills/**/*.md linguist-detectable
+skills/**/assets/**/*.css -linguist-detectable
