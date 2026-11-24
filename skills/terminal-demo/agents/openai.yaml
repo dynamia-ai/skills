@@ -1,4 +1,4 @@
 interface:
   display_name: "终端演示录制与回放"
   short_description: "Record genuine CLI demos and replay without long waits"
-  default_prompt: "使用 $terminal-demo 制作终端演示：自动输入命令、记录真实输出，压缩启动等待并导出视频。"
+  default_prompt: "使用 $terminal-demo 从关键操作前开录，保留实际命令和输出，按需压缩等待并导出视频。"
