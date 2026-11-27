@@ -14,11 +14,14 @@ import type { VideoEntry } from "./registry";
 //   <Id>-Thumb4x3
 //   <Id>-Cards        one card per frame; --props='{"lang":"en","ratio":"4x5"}'
 const build = (v: VideoEntry) => {
-  const Thumb = ({ lang, aspectRatio }: { lang: Lang; aspectRatio: "16:9" | "4:3" }) => (
-    <LangContext.Provider value={lang}>
-      <v.Thumbnail aspectRatio={aspectRatio} />
-    </LangContext.Provider>
-  );
+  const Thumbnail = v.Thumbnail;
+  const Thumb =
+    Thumbnail &&
+    (({ lang, aspectRatio }: { lang: Lang; aspectRatio: "16:9" | "4:3" }) => (
+      <LangContext.Provider value={lang}>
+        <Thumbnail aspectRatio={aspectRatio} />
+      </LangContext.Provider>
+    ));
   const cards = v.cards ?? [];
   const Deck = ({ lang, ratio }: { lang: Lang; ratio: CardRatio }) => {
     const frame = useCurrentFrame();
@@ -40,29 +43,35 @@ export const RemotionRoot = () => (
   <>
     {ENTRIES.map((v) => (
       <React.Fragment key={v.id}>
-        <Composition
-          id={v.id}
-          component={v.Video}
-          fps={30}
-          width={3840}
-          height={2160}
-          durationInFrames={300}
-          calculateMetadata={async () => ({ durationInFrames: (await loadTiming()).total_frames })}
-        />
-        <Still
-          id={`${v.id}-Thumb16x9`}
-          component={v.Thumb}
-          width={1920}
-          height={1080}
-          defaultProps={{ lang: "zh" as Lang, aspectRatio: "16:9" as const }}
-        />
-        <Still
-          id={`${v.id}-Thumb4x3`}
-          component={v.Thumb}
-          width={1200}
-          height={900}
-          defaultProps={{ lang: "zh" as Lang, aspectRatio: "4:3" as const }}
-        />
+        {v.Video && (
+          <Composition
+            id={v.id}
+            component={v.Video}
+            fps={30}
+            width={3840}
+            height={2160}
+            durationInFrames={300}
+            calculateMetadata={async () => ({ durationInFrames: (await loadTiming()).total_frames })}
+          />
+        )}
+        {v.Thumb && (
+          <>
+            <Still
+              id={`${v.id}-Thumb16x9`}
+              component={v.Thumb}
+              width={1920}
+              height={1080}
+              defaultProps={{ lang: "zh" as Lang, aspectRatio: "16:9" as const }}
+            />
+            <Still
+              id={`${v.id}-Thumb4x3`}
+              component={v.Thumb}
+              width={1200}
+              height={900}
+              defaultProps={{ lang: "zh" as Lang, aspectRatio: "4:3" as const }}
+            />
+          </>
+        )}
         {v.cardCount > 0 && (
           <Composition
             id={`${v.id}-Cards`}

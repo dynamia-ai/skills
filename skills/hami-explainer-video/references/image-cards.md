@@ -53,8 +53,8 @@ After `render_cards.py`, look at every card in every set; a contact sheet per se
 
 ```bash
 cd videos/<name>/cards/en-4x5
-ffmpeg -y -loglevel error -i 01.png -i 02.png -i 03.png -i 04.png -i 05.png -i 06.png \
-  -filter_complex "[0][1][2]hstack=3[a];[3][4][5]hstack=3[b];[a][b]vstack,scale=1500:-1" ../../../../out/qa/cards_en-4x5.jpg
+ffmpeg -y -loglevel error -pattern_type glob -i '*.png' \
+  -vf "scale=500:-1,tile=4x2" -frames:v 1 ../../../../out/qa/cards_en-4x5.jpg
 ```
 
 Look for text running into the footer or off the bottom, a title wrapping to three lines, and numbers that differ from `brief.md`. The script checks sizes and counts only.

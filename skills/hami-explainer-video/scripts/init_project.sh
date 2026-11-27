@@ -95,7 +95,8 @@ for name in $MASCOTS; do
 done
 
 cd "$PROJECT"
-[ -d node_modules ] || npm install --no-audit --no-fund --loglevel=error
+# npm writes this file when an install completes, so an interrupted one is redone.
+[ -f node_modules/.package-lock.json ] || npm install --no-audit --no-fund --loglevel=error
 [ -d .venv ] || python3 -m venv .venv
 .venv/bin/pip install -q -r "$SKILL_DIR/scripts/requirements.txt"
 

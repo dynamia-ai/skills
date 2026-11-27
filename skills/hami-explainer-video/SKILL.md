@@ -45,6 +45,12 @@ bash "$SKILL/scripts/init_project.sh"                # creates or completes the 
 bash "$SKILL/scripts/init_project.sh" --update-kit   # also refresh the shared code from the skill
 ```
 
+Then enter the project, where every later command runs:
+
+```bash
+cd "${HAMI_VIDEO_PROJECT:-$HAMI_WEBSITE_REPO/../hami-videos}"   # or the directory passed to init_project.sh
+```
+
 The script takes the website checkout from `HAMI_WEBSITE_REPO` or `--website <dir>` and stops with an error if it is missing or lacks `BRAND.md` or the artwork. An optional first argument is the project directory, overriding `$HAMI_VIDEO_PROJECT`. It needs `node`, `npm`, `python3`, `ffmpeg` and `ffprobe` on the PATH.
 
 It installs dependencies, copies the official logo and mascot artwork from the website checkout's `static/`, and reports whether an Azure Speech key is present. The key belongs in the project's `.env` (`AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION`). If it is missing, ask the user to put it there or to authorize fetching it with `az`; never ask for it to be pasted into the conversation and never print it. Cards alone need no key.
@@ -150,7 +156,7 @@ Follow [references/image-cards.md](references/image-cards.md). Write `src/remoti
 
 This renders every card at both sizes in both languages and builds the LinkedIn PDFs under `videos/<name>/cards/`. Look at every card of every set: the 4:5 size is the shortest and is where text overflows. Then write the post copy next to them (`post_zh.md`, `post_en.md`).
 
-Cards need no audio, so they can be made on their own from steps 1 and 7.
+Cards need no audio, so they can be made on their own from steps 1 and 7. For a deck without a video, register an entry with only `id` and `cards`: `{ id: "<Id>", cards }`.
 
 ### 8. Changes after review
 

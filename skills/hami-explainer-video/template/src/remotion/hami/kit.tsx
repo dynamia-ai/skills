@@ -133,10 +133,12 @@ export const Focus = ({
   children: React.ReactNode;
 }) => {
   const frame = useCurrentFrame();
-  const active = interpolate(frame, [from, from + 8, to, to + 10], [0, 1, 1, 0], CLAMP);
+  const leaving = interpolate(frame, [to, to + 10], [0, 1], CLAMP);
+  // Entrance and exit are separate so a focus shorter than the entrance still renders.
+  const active = Math.min(interpolate(frame, [from, from + 8], [0, 1], CLAMP), 1 - leaving);
   const released =
     release === undefined ? 0 : interpolate(frame, [release, release + 10], [0, 1], CLAMP);
-  const dim = interpolate(frame, [to, to + 10], [0, 1], CLAMP) * (1 - released);
+  const dim = leaving * (1 - released);
   return (
     <div
       style={{ height: "100%", transform: `scale(${1 + 0.02 * active})`, opacity: 1 - 0.5 * dim }}

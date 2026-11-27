@@ -3,10 +3,10 @@ import type React from "react";
 export interface VideoEntry {
   /** Composition id: PascalCase of the video name, e.g. "GpuSharingBenchmarks". */
   id: string;
-  /** The explainer video. Rendered once per language with --public-dir videos/<name>/<lang>/. */
-  Video: React.FC;
-  /** Cover image for the video. */
-  Thumbnail: React.FC<{ aspectRatio: "16:9" | "4:3" }>;
+  /** The explainer video. Rendered once per language with --public-dir videos/<name>/<lang>/. Omit for a cards-only entry. */
+  Video?: React.FC;
+  /** Cover image for the video. Omit for a cards-only entry. */
+  Thumbnail?: React.FC<{ aspectRatio: "16:9" | "4:3" }>;
   /** Image cards for 小绿书 and LinkedIn, in reading order. Omit if the video has none. */
   cards?: React.FC[];
 }

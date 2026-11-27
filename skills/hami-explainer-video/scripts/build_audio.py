@@ -70,13 +70,13 @@ def parse_sections(raw, lang):
             marks.append((mk.group(1), len(clean)))
         clean += body[last:]
         if lang == "en":  # a tag between two words leaves a double space behind
-            fixed, shift = "", []
-            for ch in clean:
+            fixed, dropped = "", []
+            for i, ch in enumerate(clean):
                 if ch == " " and fixed.endswith(" "):
-                    shift.append(len(fixed))
+                    dropped.append(i)
                     continue
                 fixed += ch
-            marks = [(n, i - sum(1 for s in shift if s < i)) for n, i in marks]
+            marks = [(n, i - sum(1 for d in dropped if d < i)) for n, i in marks]
             clean = fixed
         stray = re.search(r"[{}]", clean)
         if stray:
