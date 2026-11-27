@@ -95,8 +95,8 @@ for name in $MASCOTS; do
 done
 
 cd "$PROJECT"
-# npm writes this file when an install completes, so an interrupted one is redone.
-[ -f node_modules/.package-lock.json ] || npm install --no-audit --no-fund --loglevel=error
+# Install only when the declared dependencies are missing or incomplete.
+npm ls --depth=0 >/dev/null 2>&1 || npm install --no-audit --no-fund --loglevel=error
 [ -d .venv ] || python3 -m venv .venv
 .venv/bin/pip install -q -r "$SKILL_DIR/scripts/requirements.txt"
 
