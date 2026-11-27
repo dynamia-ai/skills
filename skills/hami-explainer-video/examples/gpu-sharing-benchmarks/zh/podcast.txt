@@ -1,0 +1,17 @@
+[SECTION:hero]
+一张 GPU，同时跑两个 AI 服务，{q-speed}速度会变慢吗？{q-fault}万一其中一个出了故障，另一个会不会被连累？{intro-hami}哈密社区做了一组实测，今天用三分钟给你讲明白。
+
+[SECTION:setup]
+先看怎么测。{gpu}我们用一张英伟达 A100 显卡，{models}跑两个千问模型服务，{methods}对比三种共用方式。{native}第一种是原生共用，什么都不加，两个服务直接挤在一张卡上。{hami}第二种是哈密，{quota}给每个服务划好配额，各用各的显存和算力。{mps}第三种是英伟达的 MPS，让多个程序通过同一个共享服务来使用 GPU。
+
+[SECTION:speed]
+先比速度。{graph}很多推理服务会开启一种加速模式，叫 Graph，{record}可以理解为把计算步骤提前录好，{replay}之后直接回放。{graph-result}在这种模式下，{mps-faster}MPS 明显更快，{graph-gain}比原生共用高出大约 25% 到 38%，{graph-hami}哈密和原生共用基本持平。{eager}但如果换成一步一步提交计算的 Eager 模式，{eager-result}差距就缩小了：{eager-mps}MPS 和原生共用很接近，{eager-hami}哈密会有大约 2% 到 8% 的开销。{speed-takeaway}所以，谁快谁慢，{run-mode}和程序的运行方式关系很大。
+
+[SECTION:fault]
+再看故障。{story}想象一下，同一张卡上，一个是知识助手，一个是在线客服。{crash}知识助手崩了，{still-ok}客服还能正常工作吗？{faults}我们故意制造了四种故障。{f1}第一种，申请的显存超出上限，{f1-ok}所有方案都稳稳接住，没有影响别人。{serious}但另外三种更严重的故障，{f2}比如非法写入显存、{f3}GPU 异常指令、{f4}强制杀掉进程，结果就不一样了。{pass}原生共用和哈密，6 次测试，{pass-all}同卡的正常程序全部照常运行。{mps-result}而这次测试的 MPS 配置，{mps-all}6 次全部受到了影响。{caveat}当然，这只代表这几种指定的故障，程序正常退出时，MPS 并不会影响其他程序。
+
+[SECTION:choose]
+那该怎么选？{if-speed}如果你更看重速度，也能接受故障时互相影响的风险，{pick-mps}可以重点评估 MPS。{if-quota}如果你需要管理资源配额，又希望一个服务出错时，别的服务不受牵连，{pick-hami}可以评估哈密。{both}而且两者不是二选一，{plan}哈密计划在 2.12 版本中集成新版 MPS，让你按业务需要灵活选择。{limits}要提醒的是，这次结果只对应特定的硬件、模型和版本，实际选型，还得结合自己的业务来测。
+
+[SECTION:outro]
+完整的测试报告、复现脚本和原始数据{open}都已经开源，{links}欢迎到哈密官网查看，一起来验证。{follow}关注哈密社区，我们下期见。

@@ -1,0 +1,17 @@
+[SECTION:hero]
+One GPU, two AI services running on it at the same time. {q-speed}Do they slow each other down? {q-fault}And if one of them crashes, does it take the other one down with it? {intro-hami}The Hami community ran a set of tests to find out. Here is what we learned, in three minutes.
+
+[SECTION:setup]
+First, how we tested. {gpu}We took one NVIDIA A100 GPU, {models}ran two Qwen 3 model services on it, {methods}and compared three ways of sharing. {native}The first is native sharing: nothing added, both services simply run on the same card. {hami}The second is Hami, {quota}which gives each service its own quota of memory and compute. {mps}The third is NVIDIA MPS, which lets several programs use the GPU through one shared service.
+
+[SECTION:speed]
+Speed first. {graph}Many inference services turn on an acceleration mode called Graph. {record}Think of it as recording the compute steps once, {replay}then replaying them. {graph-result}In this mode, {mps-faster}MPS is clearly faster, {graph-gain}about 25 to 38 percent above native sharing. {graph-hami}Hami performs about the same as native sharing. {eager}Switch to Eager mode, where steps are submitted one at a time, {eager-result}and the gap narrows. {eager-mps}MPS is close to native sharing, {eager-hami}and Hami shows an overhead of roughly 2 to 8 percent. {speed-takeaway}So which one is faster {run-mode}depends a lot on how your program runs.
+
+[SECTION:fault]
+Now, failures. {story}Picture one card running a knowledge assistant and a customer service bot. {crash}The knowledge assistant crashes. {still-ok}Can customer service keep working? {faults}We triggered four kinds of failure on purpose. {f1}First, requesting more memory than allowed. {f1-ok}Every setup handled it, and nothing else was affected. {serious}The other three are more severe: {f2}an illegal memory write, {f3}a GPU trap, {f4}and force-killing a process. Here the results differ. {pass}With native sharing and with Hami, across six runs, {pass-all}the healthy program on the same card kept running correctly every time. {mps-result}With the MPS setup we tested, {mps-all}it was affected in all six runs. {caveat}To be clear, this covers only these specific failures. When a program exits normally, MPS does not affect the others.
+
+[SECTION:choose]
+So how do you choose? {if-speed}If speed matters most, and you can accept services affecting each other when one fails, {pick-mps}MPS deserves a close look. {if-quota}If you need resource quotas, and want one failing service to leave the others alone, {pick-hami}evaluate Hami. {both}It does not have to be either-or: {plan}Hami plans to integrate the new version of MPS in release 2.12, so you can choose per workload. {limits}One reminder: these results come from specific hardware, models and versions. Test with your own workload before you decide.
+
+[SECTION:outro]
+The full report, the scripts and the raw data {open}are all open source. {links}Find them on the Hami website, and try to reproduce the results yourself. {follow}Follow the Hami community, and see you next time.
