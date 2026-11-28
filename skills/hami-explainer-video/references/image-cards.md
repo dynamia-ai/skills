@@ -52,6 +52,7 @@ Layout rules:
 After `render_cards.py`, look at every card in every set; a contact sheet per set is the quick way:
 
 ```bash
+mkdir -p out/qa
 cd videos/<name>/cards/en-4x5
 ffmpeg -y -loglevel error -pattern_type glob -i '*.png' \
   -vf "scale=500:-1,tile=4x2" -frames:v 1 ../../../../out/qa/cards_en-4x5.jpg

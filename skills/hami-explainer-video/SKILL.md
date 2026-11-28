@@ -48,8 +48,10 @@ bash "$SKILL/scripts/init_project.sh" --update-kit   # also refresh the shared c
 Then enter the project, where every later command runs:
 
 ```bash
-cd "${HAMI_VIDEO_PROJECT:-$HAMI_WEBSITE_REPO/../hami-videos}"   # or the directory passed to init_project.sh
+cd "${HAMI_VIDEO_PROJECT:-${HAMI_WEBSITE_REPO:?}/../hami-videos}"
 ```
+
+If the script was given `--website <dir>` or a project directory, enter the directory it printed as `Project ready:` instead.
 
 The script takes the website checkout from `HAMI_WEBSITE_REPO` or `--website <dir>` and stops with an error if it is missing or lacks `BRAND.md` or the artwork. An optional first argument is the project directory, overriding `$HAMI_VIDEO_PROJECT`. It needs `node`, `npm`, `python3`, `ffmpeg` and `ffprobe` on the PATH.
 
