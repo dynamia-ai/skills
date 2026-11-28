@@ -1,0 +1,4 @@
+azure-cognitiveservices-speech>=1.35.0,<2.0.0
+Pillow>=10
+# Fallback voice backend (free, lower quality, Chinese only here): --backend edge
+edge-tts>=7.2,<8
