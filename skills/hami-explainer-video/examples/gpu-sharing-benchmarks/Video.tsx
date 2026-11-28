@@ -781,7 +781,7 @@ const Cell = ({ ok, at }: { ok: boolean; at: number }) => {
     >
       {ok ? <CheckCircle2 size={56} color={color} /> : <XCircle size={56} color={color} />}
       <span style={{ fontSize: 34, fontWeight: 800, color }}>
-        {ok ? L("2/2 正常", "2/2 OK") : L("0/2 受影响", "0/2 affected")}
+        {ok ? L("2/2 正常", "2/2 OK") : L("2/2 受影响", "2/2 affected")}
       </span>
     </div>
   );
